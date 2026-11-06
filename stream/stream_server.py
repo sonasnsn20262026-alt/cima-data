@@ -28,7 +28,8 @@ from typing import Optional
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, Response, StreamingResponse
+from fastapi.responses import (FileResponse, JSONResponse, Response,
+                               StreamingResponse)
 from pyrogram import Client
 from pyrogram.errors import FileReferenceExpired, FloodWait
 from pyrogram.file_id import FileId
