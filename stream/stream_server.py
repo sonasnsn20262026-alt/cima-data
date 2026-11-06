@@ -761,3 +761,122 @@ if __name__ == "__main__":
         timeout_keep_alive=75,
         h11_max_incomplete_event_size=16 * 1024,
     )
+
+# ===================== إدارة القناتين (بمفتاح AUTH_TOKEN) =====================
+
+def _check_token(token: str):
+    if not AUTH_TOKEN or token != AUTH_TOKEN:
+        raise HTTPException(403, "forbidden")
+
+
+def _msg_info(m, chat_name: str) -> dict:
+    cap = (m.caption or m.text or "").strip().replace("\n", " ")[:160]
+    media = m.video or m.document
+    fid = ""
+    size = 0
+    dur = 0
+    try:
+        if m.video:
+            fid = m.video.file_id
+            size = m.video.file_size or 0
+            dur = m.video.duration or 0
+        elif m.document:
+            fid = m.document.file_id
+            size = m.document.file_size or 0
+    except Exception:
+        pass
+    return {
+        "chat": chat_name,
+        "mid": m.id,
+        "fid": fid,
+        "size": size,
+        "duration": dur,
+        "caption": cap,
+        "date": m.date.isoformat() if m.date else "",
+    }
+
+
+async def _iter_channel(chat_name: str, limit: int, query: str = ""):
+    out = []
+    if query:
+        async for m in client.search_messages(chat_name, query=query, limit=limit):
+            out.append(_msg_info(m, chat_name))
+    else:
+        async for m in client.get_chat_history(chat_name, limit=limit):
+            out.append(_msg_info(m, chat_name))
+    return out
+
+
+@app.get("/admin/scan")
+async def admin_scan(token: str, title: str = "", limit: int = 5000):
+    """يبحث عن عمل في القناتين ويعيد حلقاته من كل قناة."""
+    _check_token(token)
+    if client is None or not getattr(client, "is_connected", False):
+        raise HTTPException(503, "not_connected")
+    res = {}
+    for ch in CHANNELS:
+        try:
+            res[ch] = await _iter_channel(ch, limit, title) if title else await _iter_channel(ch, limit)
+        except Exception as e:
+            res[ch] = [{"error": str(e)[:120]}]
+    return res
+
+
+@app.get("/admin/duplicates")
+async def admin_duplicates(token: str, limit: int = 5000):
+    """يكشف التكرار بين القناتين: نفس الملف، أو نفس الاسم والحلقة."""
+    _check_token(token)
+    if client is None or not getattr(client, "is_connected", False):
+        raise HTTPException(503, "not_connected")
+    all_msgs = []
+    for ch in CHANNELS:
+        try:
+            all_msgs.extend(await _iter_channel(ch, limit))
+        except Exception:
+            pass
+    by_fid = {}
+    for m in all_msgs:
+        if m["fid"]:
+            by_fid.setdefault(m["fid"], []).append(m)
+    same_file = [v for v in by_fid.values() if len({x["chat"] for x in v}) > 1]
+
+    import re as _re
+    def key(cap):
+        t = _re.sub(r"-\s*S\d+E\d+.*$", "", cap).strip()
+        t = _re.sub(r"[^\u0621-\u064Aa-zA-Z0-9]", "", t).lower()
+        ep = _re.search(r"S(\d+)E(\d+)", cap)
+        return (t, ep.group(1), ep.group(2)) if ep else (t, "", "")
+
+    by_key = {}
+    for m in all_msgs:
+        if m["fid"]:
+            by_key.setdefault(key(m["caption"]), []).append(m)
+    same_ep = [v for k, v in by_key.items() if k[0] and len({x["chat"] for x in v}) > 1]
+
+    return {
+        "total": len(all_msgs),
+        "per_channel": {ch: sum(1 for m in all_msgs if m["chat"] == ch) for ch in CHANNELS},
+        "same_file_groups": len(same_file),
+        "same_episode_groups": len(same_ep),
+        "same_file": [[{k: x[k] for k in ("chat", "mid", "caption")} for x in g[:4]] for g in same_file[:40]],
+        "same_episode": [[{k: x[k] for k in ("chat", "mid", "caption")} for x in g[:4]] for g in same_ep[:40]],
+    }
+
+
+@app.post("/admin/delete")
+async def admin_delete(token: str, chat: str, mids: str):
+    """يحذف رسائل محددة من قناة واحدة (لمنع التكرار)."""
+    _check_token(token)
+    if chat not in CHANNELS:
+        raise HTTPException(400, "bad_channel")
+    if client is None or not getattr(client, "is_connected", False):
+        raise HTTPException(503, "not_connected")
+    ids = [int(x) for x in mids.split(",") if x.strip().isdigit()]
+    if not ids:
+        raise HTTPException(400, "no_mids")
+    try:
+        await client.delete_messages(chat, ids)
+    except Exception as e:
+        raise HTTPException(500, str(e)[:200])
+    return {"deleted": len(ids), "chat": chat, "mids": ids}
+
