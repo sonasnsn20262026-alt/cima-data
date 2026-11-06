@@ -263,19 +263,44 @@ async def auth_verify(code: str, phone: str, phone_code_hash: str, token: str):
 
 
 @app.get("/thumb")
-async def thumb(mid: int):
+async def thumb(mid: int, fid: str = "", ch: str = ""):
     """صورة العمل (مصغّرة الحلقة) مباشرة من تليجرام — تُستخدم كبوستر."""
     if client is None or not getattr(client, "is_connected", False):
         raise HTTPException(503, "not_connected")
-    msg = None
-    for ch in (CHANNELS or [CHANNEL_ID]):
+    # ★ لا اختلاط بين القناتين: لو وصل file_id نتحقق أن الرسالة هي نفس الملف
+    expected_mid = None
+    if fid:
         try:
-            msg = await asyncio.wait_for(
-                client.get_messages(ch, int(mid)), timeout=12)
+            expected_mid = FileId.decode(fid).media_id
         except Exception:
-            msg = None
-        if msg:
-            break
+            expected_mid = None
+
+    order = ([ch] if ch and ch in CHANNELS else []) + [c for c in CHANNELS if c != ch]
+    msg = None
+    for c in order:
+        try:
+            m = await asyncio.wait_for(
+                client.get_messages(c, int(mid)), timeout=12)
+        except Exception:
+            m = None
+        if not m:
+            continue
+        if expected_mid is not None:
+            got = None
+            if m.video:
+                try:
+                    got = FileId.decode(m.video.file_id).media_id
+                except Exception:
+                    got = None
+            elif m.document:
+                try:
+                    got = FileId.decode(m.document.file_id).media_id
+                except Exception:
+                    got = None
+            if got != expected_mid:
+                continue   # رسالة رقمها متطابق لكن الملف مختلف → قناة أخرى
+        msg = m
+        break
     if not msg:
         raise HTTPException(404, "not_found")
     path = None
