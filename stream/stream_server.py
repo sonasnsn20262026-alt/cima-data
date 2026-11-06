@@ -55,7 +55,12 @@ _channels_raw = (
     or os.environ.get("CHANNEL_ID")
     or "shoofcima,shoofFilm"   # القناتان افتراضيًا
 )
-CHANNELS = [c.strip() for c in _channels_raw.split(",") if c.strip()]
+_env_channels = [c.strip() for c in _channels_raw.split(",") if c.strip()]
+# ★ القناتان دائمًا معًا (حتى لو متغيّر البيئة يذكر واحدة فقط)
+CHANNELS = []
+for _c in ["shoofcima", "shoofFilm"] + _env_channels:
+    if _c and _c not in CHANNELS:
+        CHANNELS.append(_c)
 CHANNEL_ID = CHANNELS[0] if CHANNELS else ""  # توافق خلفي
 
 # تحقق صارم قبل أي شيء
