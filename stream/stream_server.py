@@ -559,15 +559,32 @@ async def stream_head(fid: str, size: int = 0, mid: int = 0):
 @app.get("/stream")
 async def stream(
     request: Request,
-    fid: str,
+    fid: str = "",
     size: int = 0,
     mid: int = 0,
+    ch: str = "",
 ):
     """
     بث الفيديو. pre-fetch الكتلة الأولى لضمان CORS.
     يدعم Range requests (تقديم/إرجاع).
+
+    ★ mid + ch هما المصدر الموثوق: يُقرأ الملف من الرسالة نفسها،
+      حتى لا يُبَث ملف قديم/عمل آخر بنفس المعرّف.
     """
-    # ─── التحقق ───
+    # ─── تحديد الملف: الرسالة أولًا ثم المعرّف ───
+    if mid > 0 and client is not None and getattr(client, "is_connected", False):
+        order = [ch] if ch in CHANNELS else list(CHANNELS)
+        for name in order:
+            try:
+                m = await client.get_messages(name, mid)
+            except Exception:
+                m = None
+            media = getattr(m, "video", None) or getattr(m, "document", None) if m else None
+            if media:
+                fid = media.file_id
+                size = media.file_size or size
+                break
+
     if not fid:
         raise HTTPException(400, "missing fid parameter")
 
