@@ -858,8 +858,8 @@ async def admin_duplicates(token: str, limit: int = 5000):
         "per_channel": {ch: sum(1 for m in all_msgs if m["chat"] == ch) for ch in CHANNELS},
         "same_file_groups": len(same_file),
         "same_episode_groups": len(same_ep),
-        "same_file": [[{k: x[k] for k in ("chat", "mid", "caption")} for x in g[:4]] for g in same_file[:40]],
-        "same_episode": [[{k: x[k] for k in ("chat", "mid", "caption")} for x in g[:4]] for g in same_ep[:40]],
+        "same_file": [[{k: x[k] for k in ("chat", "mid", "caption")} for x in g[:4]] for g in same_file[:400]],
+        "same_episode": [[{k: x[k] for k in ("chat", "mid", "caption")} for x in g[:4]] for g in same_ep[:400]],
     }
 
 
