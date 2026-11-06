@@ -53,7 +53,7 @@ _channels_raw = (
     os.environ.get("CHANNELS")
     or os.environ.get("CHANNEL")
     or os.environ.get("CHANNEL_ID")
-    or ""
+    or "shoofcima,shoofFilm"   # القناتان افتراضيًا
 )
 CHANNELS = [c.strip() for c in _channels_raw.split(",") if c.strip()]
 CHANNEL_ID = CHANNELS[0] if CHANNELS else ""  # توافق خلفي
