@@ -256,6 +256,34 @@ async def auth_verify(code: str, phone: str, phone_code_hash: str, token: str):
     return {"session_string": sess, "user_id": me.id, "username": me.username}
 
 
+@app.get("/thumb")
+async def thumb(mid: int):
+    """صورة العمل (مصغّرة الحلقة) مباشرة من تليجرام — تُستخدم كبوستر."""
+    if client is None or not getattr(client, "is_connected", False):
+        raise HTTPException(503, "not_connected")
+    try:
+        msg = await asyncio.wait_for(
+            client.get_messages(CHANNELS[0], int(mid)), timeout=15)
+    except Exception:
+        raise HTTPException(504, "timeout")
+    if not msg:
+        raise HTTPException(404, "not_found")
+    path = None
+    try:
+        if msg.video and msg.video.thumbs:
+            path = await asyncio.wait_for(
+                client.download_media(msg.video.thumbs[-1], file_name="/tmp/t.jpg"), timeout=20)
+        elif msg.photo:
+            path = await asyncio.wait_for(
+                client.download_media(msg.photo.file_id, file_name="/tmp/t.jpg"), timeout=20)
+    except Exception:
+        raise HTTPException(504, "download_timeout")
+    if not path or not os.path.exists(path):
+        raise HTTPException(404, "no_thumb")
+    return FileResponse(path, media_type="image/jpeg",
+                        headers={"Cache-Control": "public, max-age=604800"})
+
+
 @app.get("/admin/reconnect")
 async def admin_reconnect():
     """إعادة توصيل MTProto يدويًا عند تعليق البث."""
