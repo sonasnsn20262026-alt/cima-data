@@ -28,8 +28,7 @@ from typing import Optional
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import (FileResponse, JSONResponse, Response,
-                               StreamingResponse)
+from fastapi.responses import JSONResponse, Response, StreamingResponse
 from pyrogram import Client
 from pyrogram.errors import FileReferenceExpired, FloodWait
 from pyrogram.file_id import FileId
@@ -262,11 +261,15 @@ async def thumb(mid: int):
     """صورة العمل (مصغّرة الحلقة) مباشرة من تليجرام — تُستخدم كبوستر."""
     if client is None or not getattr(client, "is_connected", False):
         raise HTTPException(503, "not_connected")
-    try:
-        msg = await asyncio.wait_for(
-            client.get_messages(CHANNELS[0], int(mid)), timeout=15)
-    except Exception:
-        raise HTTPException(504, "timeout")
+    msg = None
+    for ch in (CHANNELS or [CHANNEL_ID]):
+        try:
+            msg = await asyncio.wait_for(
+                client.get_messages(ch, int(mid)), timeout=12)
+        except Exception:
+            msg = None
+        if msg:
+            break
     if not msg:
         raise HTTPException(404, "not_found")
     path = None
