@@ -824,6 +824,24 @@ async def _iter_channel(chat_name: str, limit: int, query: str = ""):
     return out
 
 
+@app.get("/admin/me")
+async def admin_me(token: str):
+    """رقم الهاتف المسجّل في الجلسة الحالية (لبدء جلسة جديدة منفصلة)."""
+    _check_token(token)
+    if client is None or not getattr(client, "is_connected", False):
+        raise HTTPException(503, "not_connected")
+    try:
+        me = await client.get_me()
+    except Exception as e:
+        raise HTTPException(500, str(e)[:150])
+    return {
+        "id": me.id,
+        "username": me.username,
+        "phone": getattr(me, "phone_number", "") or "",
+        "first_name": me.first_name,
+    }
+
+
 @app.get("/admin/scan")
 async def admin_scan(token: str, title: str = "", limit: int = 5000):
     """يبحث عن عمل في القناتين ويعيد حلقاته من كل قناة."""
