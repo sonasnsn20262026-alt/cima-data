@@ -246,6 +246,7 @@ async def auth_send_code(phone: str, token: str):
 @app.get("/auth/verify")
 async def auth_verify(code: str, phone: str, phone_code_hash: str, token: str):
     """يتحقق من الكود ويعيد session string."""
+    global _auth_client
     if not _auth_ok(token):
         raise HTTPException(403, "forbidden")
     if _auth_client is None:
@@ -259,6 +260,16 @@ async def auth_verify(code: str, phone: str, phone_code_hash: str, token: str):
         raise HTTPException(400, msg[:200])
     sess = await _auth_client.export_session_string()
     me = await _auth_client.get_me()
+    # ★ إغلاق عميل التسجيل فورًا: بقاؤه متصلًا يعني أن المفتاح الجديد
+    #   «مستخدم في مكانين» فيُرفض بـ406 عند استخدامه في الكرنل.
+    try:
+        await _auth_client.stop()
+    except Exception:
+        try:
+            await _auth_client.disconnect()
+        except Exception:
+            pass
+    _auth_client = None
     return {"session_string": sess, "user_id": me.id, "username": me.username}
 
 
