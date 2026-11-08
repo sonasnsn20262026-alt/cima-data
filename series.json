@@ -1887,6 +1887,24 @@
    "is_movie": false,
    "lang": "مترجم",
    "last_updated": ""
+  },
+  {
+   "name": "حياتي الرايعه مدبلج",
+   "base_name": "حياتي الرايعه مدبلج",
+   "season": 0,
+   "slug": "حياتي-الرايعه-مدبلج",
+   "poster": "https://automation-production-0137.up.railway.app/posters/_placeholder.jpg",
+   "episodes_count": 32,
+   "eps": 32,
+   "genre": "",
+   "category": "",
+   "source": "telegram",
+   "source_category": "",
+   "origin": "",
+   "is_movie": false,
+   "lang": "",
+   "last_updated": "",
+   "label": ""
   }
  ]
 }
