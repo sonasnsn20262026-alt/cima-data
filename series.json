@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-08T19:23:47.781141+00:00",
+ "built_at": "2026-11-08T19:28:16.548709+00:00",
  "series": [
   {
    "name": "فيلينتا مدبلج الموسم 1",
@@ -1352,8 +1352,8 @@
    "label": "مدبلج"
   },
   {
-   "name": "فيلم|الفيل الازرق",
-   "base_name": "فيلم|الفيل الازرق",
+   "name": "الفيل الازرق",
+   "base_name": "الفيل الازرق",
    "season": 0,
    "label": "",
    "slug": "فيلم-الفيل-الازرق-efcd0400",
@@ -1366,6 +1366,24 @@
    "source_category": "",
    "origin": "",
    "is_movie": false,
+   "lang": "",
+   "last_updated": ""
+  },
+  {
+   "name": "ابو نسب",
+   "base_name": "ابو نسب",
+   "season": 1,
+   "label": "الموسم 1",
+   "slug": "ابو-نسب-7197aa85",
+   "poster": "https://automation-production-0137.up.railway.app/posters/orig-%D8%A7%D8%A8%D9%88-%D9%86%D8%B3%D8%A8-7197aa85.jpg",
+   "episodes_count": 1,
+   "eps": 1,
+   "genre": "",
+   "category": "مسلسلات عربية",
+   "source": "telegram",
+   "source_category": "",
+   "origin": "",
+   "is_movie": true,
    "lang": "",
    "last_updated": ""
   },
@@ -1388,6 +1406,24 @@
    "label": "مدبلج"
   },
   {
+   "name": "اخي فوق الشجره",
+   "base_name": "اخي فوق الشجره",
+   "season": 1,
+   "label": "الموسم 1",
+   "slug": "اخي-فوق-الشجره-c7fcbde7",
+   "poster": "https://automation-production-0137.up.railway.app/posters/orig-%D8%A7%D8%AE%D9%8A-%D9%81%D9%88%D9%82-%D8%A7%D9%84%D8%B4%D8%AC%D8%B1%D9%87-c7fcbde7.jpg",
+   "episodes_count": 1,
+   "eps": 1,
+   "genre": "",
+   "category": "مسلسلات عربية",
+   "source": "telegram",
+   "source_category": "",
+   "origin": "",
+   "is_movie": true,
+   "lang": "",
+   "last_updated": ""
+  },
+  {
    "name": "اش اش",
    "base_name": "اش اش",
    "season": 0,
@@ -1406,9 +1442,10 @@
    "label": ""
   },
   {
-   "name": "افاتار الموسم 3 الموسم 3",
-   "base_name": "افاتار الموسم 3 الموسم 3",
+   "name": "افاتار الموسم 3",
+   "base_name": "افاتار الموسم 3",
    "season": 3,
+   "label": "الموسم 3 · — الموسم 3",
    "slug": "افاتار-الموسم-3-الموسم-3-2e174a5e",
    "poster": "https://automation-production-0137.up.railway.app/posters/pin-%D8%A7%D9%81%D8%A7%D8%AA%D8%A7%D8%B1-1-2009-9d372da9.jpg",
    "episodes_count": 1,
@@ -1417,29 +1454,46 @@
    "category": "مسلسلات عربية",
    "source": "telegram",
    "source_category": "",
-   "origin": "arabic",
-   "is_movie": false,
+   "origin": "",
+   "is_movie": true,
    "lang": "",
-   "last_updated": "",
-   "label": "الموسم 3 · — الموسم 3"
+   "last_updated": ""
   },
   {
-   "name": "الحلانجي",
-   "base_name": "الحلانجي",
-   "season": 0,
-   "slug": "الحلانجي-bc6baf9c",
-   "poster": "https://automation-production-0137.up.railway.app/posters/orig-%D8%A7%D9%84%D8%AD%D9%84%D8%A7%D9%86%D8%AC%D9%8A-bc6baf9c.jpg",
+   "name": "الاصليين",
+   "base_name": "الاصليين",
+   "season": 1,
+   "label": "الموسم 1",
+   "slug": "الاصليين-6af40d68",
+   "poster": "https://automation-production-0137.up.railway.app/posters/pin-%D8%A7%D9%84%D8%A7%D8%B5%D9%84%D9%8A%D9%8A%D9%86.jpg",
    "episodes_count": 1,
    "eps": 1,
    "genre": "",
    "category": "مسلسلات عربية",
    "source": "telegram",
    "source_category": "",
-   "origin": "arabic",
-   "is_movie": false,
+   "origin": "",
+   "is_movie": true,
    "lang": "",
-   "last_updated": "",
-   "label": ""
+   "last_updated": ""
+  },
+  {
+   "name": "الحلانجي",
+   "base_name": "الحلانجي",
+   "season": 0,
+   "label": "",
+   "slug": "الحلانجي",
+   "poster": "https://automation-production-0137.up.railway.app/posters/orig-%D8%A7%D9%84%D8%AD%D9%84%D8%A7%D9%86%D8%AC%D9%8A-bc6baf9c.jpg",
+   "episodes_count": 1,
+   "eps": 1,
+   "genre": "",
+   "category": "",
+   "source": "telegram",
+   "source_category": "",
+   "origin": "",
+   "is_movie": true,
+   "lang": "",
+   "last_updated": ""
   },
   {
    "name": "الخياط مدبلج",
@@ -1458,6 +1512,24 @@
    "lang": "مدبلج",
    "last_updated": "",
    "label": "مدبلج"
+  },
+  {
+   "name": "السرب",
+   "base_name": "السرب",
+   "season": 1,
+   "label": "الموسم 1",
+   "slug": "السرب-39db8863",
+   "poster": "https://automation-production-0137.up.railway.app/posters/orig-%D8%A7%D9%84%D8%B3%D8%B1%D8%A8-39db8863.jpg",
+   "episodes_count": 1,
+   "eps": 1,
+   "genre": "",
+   "category": "مسلسلات عربية",
+   "source": "telegram",
+   "source_category": "",
+   "origin": "",
+   "is_movie": true,
+   "lang": "",
+   "last_updated": ""
   },
   {
    "name": "الصندوق الاسود",
@@ -1512,6 +1584,24 @@
    "lang": "",
    "last_updated": "",
    "label": ""
+  },
+  {
+   "name": "انا لحبيبي",
+   "base_name": "انا لحبيبي",
+   "season": 1,
+   "label": "الموسم 1",
+   "slug": "انا-لحبيبي-feb66c15",
+   "poster": "https://automation-production-0137.up.railway.app/posters/orig-%D8%A7%D9%86%D8%A7-%D9%84%D8%AD%D8%A8%D9%8A%D8%A8%D9%8A-feb66c15.jpg",
+   "episodes_count": 1,
+   "eps": 1,
+   "genre": "",
+   "category": "مسلسلات عربية",
+   "source": "telegram",
+   "source_category": "",
+   "origin": "",
+   "is_movie": true,
+   "lang": "",
+   "last_updated": ""
   },
   {
    "name": "تراب الماس",
@@ -1640,8 +1730,8 @@
    "label": ""
   },
   {
-   "name": "فيلم|19 ب",
-   "base_name": "فيلم|19 ب",
+   "name": "19 ب",
+   "base_name": "19 ب",
    "season": 0,
    "label": "",
    "slug": "فيلم-19-ب-7b703ddc",
@@ -1658,7 +1748,7 @@
    "last_updated": ""
   },
   {
-   "name": "فيلم|ابو نسب",
+   "name": "ابو نسب",
    "base_name": "ابو نسب",
    "season": 2,
    "label": "الموسم 2",
@@ -1676,7 +1766,7 @@
    "last_updated": ""
   },
   {
-   "name": "فيلم|اخي فوق الشجره",
+   "name": "اخي فوق الشجره",
    "base_name": "اخي فوق الشجره",
    "season": 2,
    "label": "الموسم 2",
@@ -1694,8 +1784,8 @@
    "last_updated": ""
   },
   {
-   "name": "فيلم|اكس مراتي",
-   "base_name": "فيلم|اكس مراتي",
+   "name": "اكس مراتي",
+   "base_name": "اكس مراتي",
    "season": 0,
    "label": "",
    "slug": "فيلم-اكس-مراتي-a43c45ba",
@@ -1712,8 +1802,8 @@
    "last_updated": ""
   },
   {
-   "name": "فيلم|ال هارون",
-   "base_name": "فيلم|ال هارون",
+   "name": "ال هارون",
+   "base_name": "ال هارون",
    "season": 0,
    "label": "",
    "slug": "فيلم-ال-هارون-06ee98c6",
@@ -1730,7 +1820,7 @@
    "last_updated": ""
   },
   {
-   "name": "فيلم|الاصليين",
+   "name": "الاصليين",
    "base_name": "الاصليين",
    "season": 2,
    "label": "الموسم 2",
@@ -1748,8 +1838,8 @@
    "last_updated": ""
   },
   {
-   "name": "فيلم|الدشاش",
-   "base_name": "فيلم|الدشاش",
+   "name": "الدشاش",
+   "base_name": "الدشاش",
    "season": 0,
    "label": "",
    "slug": "فيلم-الدشاش-3b930f6d",
@@ -1766,7 +1856,7 @@
    "last_updated": ""
   },
   {
-   "name": "فيلم|السرب",
+   "name": "السرب",
    "base_name": "السرب",
    "season": 2,
    "label": "الموسم 2",
@@ -1784,8 +1874,8 @@
    "last_updated": ""
   },
   {
-   "name": "فيلم|العنكبوت",
-   "base_name": "فيلم|العنكبوت",
+   "name": "العنكبوت",
+   "base_name": "العنكبوت",
    "season": 0,
    "label": "",
    "slug": "فيلم-العنكبوت-71e17758",
@@ -1802,8 +1892,8 @@
    "last_updated": ""
   },
   {
-   "name": "فيلم|الهنا اللي انا فيه",
-   "base_name": "فيلم|الهنا اللي انا فيه",
+   "name": "الهنا اللي انا فيه",
+   "base_name": "الهنا اللي انا فيه",
    "season": 0,
    "label": "",
    "slug": "فيلم-الهنا-اللي-انا-فيه-138942e7",
@@ -1820,7 +1910,7 @@
    "last_updated": ""
   },
   {
-   "name": "فيلم|انا لحبيبي",
+   "name": "انا لحبيبي",
    "base_name": "انا لحبيبي",
    "season": 2,
    "label": "الموسم 2",
@@ -1838,8 +1928,8 @@
    "last_updated": ""
   },
   {
-   "name": "فيلم|اهل الكهف",
-   "base_name": "فيلم|اهل الكهف",
+   "name": "اهل الكهف",
+   "base_name": "اهل الكهف",
    "season": 0,
    "label": "",
    "slug": "فيلم-اهل-الكهف-d1c45ac3",
@@ -1856,8 +1946,8 @@
    "last_updated": ""
   },
   {
-   "name": "فيلم|ريستارت",
-   "base_name": "فيلم|ريستارت",
+   "name": "ريستارت",
+   "base_name": "ريستارت",
    "season": 0,
    "label": "",
    "slug": "فيلم-ريستارت-c67c9168",
@@ -1874,8 +1964,8 @@
    "last_updated": ""
   },
   {
-   "name": "فيلم|شقو",
-   "base_name": "فيلم|شقو",
+   "name": "شقو",
+   "base_name": "شقو",
    "season": 0,
    "label": "",
    "slug": "فيلم-شقو-503b53b8",
@@ -1892,8 +1982,8 @@
    "last_updated": ""
   },
   {
-   "name": "فيلم|شماريخ",
-   "base_name": "فيلم|شماريخ",
+   "name": "شماريخ",
+   "base_name": "شماريخ",
    "season": 0,
    "label": "",
    "slug": "فيلم-شماريخ-8e48e23e",
@@ -1910,8 +2000,8 @@
    "last_updated": ""
   },
   {
-   "name": "فيلم|ليله عيد",
-   "base_name": "فيلم|ليله عيد",
+   "name": "ليله عيد",
+   "base_name": "ليله عيد",
    "season": 0,
    "label": "",
    "slug": "فيلم-ليله-عيد-a654594a",
@@ -1928,8 +2018,8 @@
    "last_updated": ""
   },
   {
-   "name": "فيلم|يوم",
-   "base_name": "فيلم|يوم",
+   "name": "يوم",
+   "base_name": "يوم",
    "season": 0,
    "label": "",
    "slug": "فيلم-يوم-b3266acf",
@@ -1968,7 +2058,7 @@
    "base_name": "قوي قوي قوي",
    "season": 0,
    "slug": "قوي-قوي-قوي-ecac7e36",
-   "poster": "https://automation-production-0137.up.railway.app/posters/pin-%D9%82%D9%88%D9%8A-%D9%82%D9%88%D9%8A-%D9%82%D9%88%D9%8A.jpg",
+   "poster": "https://automation-production-0137.up.railway.app/posters/orig-%D9%82%D9%88%D9%8A-%D9%82%D9%88%D9%8A-%D9%82%D9%88%D9%8A.jpg",
    "episodes_count": 1,
    "eps": 1,
    "genre": "",
