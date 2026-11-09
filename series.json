@@ -1,5 +1,5 @@
 {
- "built_at": "2026-11-09T00:19:38.366053+00:00",
+ "built_at": "2026-11-09T00:57:58.152728+00:00",
  "series": [
   {
    "name": "فيلينتا مدبلج الموسم 1",
@@ -1463,7 +1463,6 @@
    "name": "افاتار الموسم 3",
    "base_name": "افاتار الموسم 3",
    "season": 3,
-   "label": "الموسم 3 · — الموسم 3",
    "slug": "افاتار-الموسم-3-الموسم-3-2e174a5e",
    "poster": "https://automation-production-0137.up.railway.app/posters/%D8%A7%D9%81%D8%A7%D8%AA%D8%A7%D8%B1-%D8%A7%D9%84%D9%85%D9%88%D8%B3%D9%85-3-%D8%A7%D9%84%D9%85%D9%88%D8%B3%D9%85-3-2e174a5e.jpg",
    "episodes_count": 1,
@@ -1472,10 +1471,11 @@
    "category": "مسلسلات عربية",
    "source": "telegram",
    "source_category": "",
-   "origin": "",
-   "is_movie": true,
+   "origin": "arabic",
+   "is_movie": false,
    "lang": "",
-   "last_updated": ""
+   "last_updated": "",
+   "label": "الموسم 3 · — الموسم 3"
   },
   {
    "name": "اكس مراتي",
