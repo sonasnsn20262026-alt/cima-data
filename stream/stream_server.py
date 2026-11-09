@@ -93,8 +93,8 @@ CHUNK_SIZE = 1024 * 1024               # 1MB للبث
 #   فيصير بدء التشغيل فوريًا والحلقة تُشغَّل من الكاش بلا Telegram.
 # ═══════════════════════════════════════════════════════════════
 WARM_ENABLED = os.environ.get("WARM_ENABLED", "1").lower() in ("1", "true", "yes")
-WARM_MAX = int(os.environ.get("WARM_MAX", "48"))       # عدد الكتل المحفوظة
-WARM_COUNT = int(os.environ.get("WARM_COUNT", "40"))    # عدد الحلقات المسخّنة
+WARM_MAX = int(os.environ.get("WARM_MAX", "64"))       # عدد الكتل المحفوظة
+WARM_COUNT = int(os.environ.get("WARM_COUNT", "60"))    # عدد الحلقات المسخّنة
 WARM_GAP = float(os.environ.get("WARM_GAP", "1.2"))     # فاصل بين الطلبات
 WARM_SOURCE_URL = os.environ.get(
     "WARM_SOURCE_URL", "https://web-production-fd654.up.railway.app/videos.json")
