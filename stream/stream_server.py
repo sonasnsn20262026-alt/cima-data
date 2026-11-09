@@ -19,10 +19,12 @@ except RuntimeError:
 # ═══════════════════════════════════════════════════════════════
 # 1) الاستيرادات
 # ═══════════════════════════════════════════════════════════════
+import json
 import os
 import re
 import time
 import traceback
+from collections import OrderedDict
 from contextlib import asynccontextmanager
 from typing import Optional
 
@@ -83,6 +85,52 @@ if NO_SESSION_MODE:
 # قواعد Telegram
 BLOCK_SIZE = 4096                      # الحجم الأدنى الذي يقرأه Telegram
 CHUNK_SIZE = 1024 * 1024               # 1MB للبث
+
+# ═══════════════════════════════════════════════════════════════
+# ★ تسخين الكتلة الأولى (warm start)
+#   أول طلب لكل حلقة كان يدفع ثمن قراءة الرسالة + GetFile (~9 ث).
+#   نخزّن الكتلة الأولى في الذاكرة ونُسخّنها مسبقًا في الخلفية،
+#   فيصير بدء التشغيل فوريًا والحلقة تُشغَّل من الكاش بلا Telegram.
+# ═══════════════════════════════════════════════════════════════
+WARM_ENABLED = os.environ.get("WARM_ENABLED", "1").lower() in ("1", "true", "yes")
+WARM_MAX = int(os.environ.get("WARM_MAX", "48"))       # عدد الكتل المحفوظة
+WARM_COUNT = int(os.environ.get("WARM_COUNT", "40"))    # عدد الحلقات المسخّنة
+WARM_GAP = float(os.environ.get("WARM_GAP", "1.2"))     # فاصل بين الطلبات
+WARM_SOURCE_URL = os.environ.get(
+    "WARM_SOURCE_URL", "https://web-production-fd654.up.railway.app/videos.json")
+_WARM = OrderedDict()          # (ch, mid, offset, limit) -> bytes
+_WARM_STATS = {"warmed": 0, "hits": 0, "miss": 0, "last_error": ""}
+
+
+def _warm_key(ch, mid, offset, limit):
+    return (ch or "", int(mid or 0), int(offset), int(limit))
+
+
+def warm_get(ch, mid, offset, limit, count=True):
+    """يقرأ الكتلة من الذاكرة (None إن لم تكن مسخّنة)."""
+    if not WARM_ENABLED:
+        return None
+    key = _warm_key(ch, mid, offset, limit)
+    data = _WARM.get(key)
+    if data is None:
+        if count:
+            _WARM_STATS["miss"] += 1
+        return None
+    _WARM.move_to_end(key)
+    if count:
+        _WARM_STATS["hits"] += 1
+    return data
+
+
+def warm_put(ch, mid, offset, limit, data):
+    """يخزّن الكتلة في الذاكرة (LRU محدود)."""
+    if not WARM_ENABLED or not data or int(mid or 0) <= 0:
+        return
+    key = _warm_key(ch, mid, offset, limit)
+    _WARM[key] = data
+    _WARM.move_to_end(key)
+    while len(_WARM) > WARM_MAX:
+        _WARM.popitem(last=False)
 MAX_REFRESH_PER_STREAM = 3             # حد إعادة محاولة file_reference
 STREAM_TIMEOUT = 600                   # 10 دقائق كحد أقصى للبث الواحد
 
@@ -146,7 +194,15 @@ async def lifespan(app: FastAPI):
         traceback.print_exc()
         raise
 
+    warm_task = asyncio.create_task(warm_loop())
+
     yield
+
+    warm_task.cancel()
+    try:
+        await warm_task
+    except (asyncio.CancelledError, Exception):
+        pass
 
     print("👋 إيقاف عميل MTProto...")
     try:
@@ -223,6 +279,14 @@ async def health():
         "status": "ok" if connected else "degraded",
         "mtproto_connected": connected,
         "uptime_seconds": int(time.time() - START_TIME),
+        "warm": {
+            "enabled": WARM_ENABLED,
+            "cached": len(_WARM),
+            "max": WARM_MAX,
+            "hits": _WARM_STATS["hits"],
+            "warmed_total": _WARM_STATS["warmed"],
+            "last_error": _WARM_STATS["last_error"],
+        },
     }
 
 
@@ -543,6 +607,105 @@ async def fetch_chunk(
 
 
 # ═══════════════════════════════════════════════════════════════
+# 9.5) تسخين مسبق للكتلة الأولى
+# ═══════════════════════════════════════════════════════════════
+def _load_warm_items():
+    """أول حلقة من كل عمل، من كتالوج الموقع (لا يحتاج Telegram)."""
+    import urllib.request
+    try:
+        with urllib.request.urlopen(WARM_SOURCE_URL, timeout=25) as r:
+            vids = json.loads(r.read().decode("utf-8"))
+    except Exception as e:
+        _WARM_STATS["last_error"] = f"{type(e).__name__}: {e}"
+        print(f"⚠️ تعذّر جلب قائمة التسخين: {e}")
+        return []
+    first = {}
+    for v in vids if isinstance(vids, list) else []:
+        mid = int(v.get("mid") or 0)
+        if mid <= 0:
+            continue
+        ch = (v.get("ch") or "").strip()
+        key = (v.get("series") or "", ch)
+        try:
+            ep = int(v.get("episode") or 0)
+        except Exception:
+            ep = 0
+        cur = first.get(key)
+        if cur is None or (ep and (not cur[0] or ep < cur[0])):
+            first[key] = (ep, mid, ch)
+    return [(ch, mid) for (_ep, mid, ch) in first.values()]
+
+
+async def _warm_episode(ch, mid, limit=CHUNK_SIZE):
+    """يجلب الكتلة الأولى لحلقة ويحفظها في الذاكرة."""
+    if mid <= 0 or client is None or not getattr(client, "is_connected", False):
+        return False
+    if _warm_key(ch, mid, 0, limit) in _WARM:
+        return True
+    order = [ch] if ch in CHANNELS else list(CHANNELS)
+    media = None
+    for name in order:
+        try:
+            m = await client.get_messages(name, mid)
+        except Exception:
+            m = None
+        media = (getattr(m, "video", None) or getattr(m, "document", None)) if m else None
+        if media:
+            break
+    if not media:
+        return False
+    try:
+        location = build_location(FileId.decode(media.file_id))
+        data, _loc, _fid = await fetch_chunk(
+            location, 0, limit, mid, media.file_id, {"attempts": 0})
+    except Exception as e:
+        _WARM_STATS["last_error"] = f"{type(e).__name__}: {e}"
+        return False
+    if not data:
+        return False
+    warm_put(ch, mid, 0, limit, data)
+    _WARM_STATS["warmed"] += 1
+    return True
+
+
+async def warm_loop():
+    """تسخين عند البدء ثم كل 6 ساعات."""
+    if not WARM_ENABLED:
+        print("ℹ️  التسخين المسبق معطّل (WARM_ENABLED=0)")
+        return
+    await asyncio.sleep(15)
+    while True:
+        try:
+            items = await asyncio.to_thread(_load_warm_items)
+            todo = items[:WARM_COUNT]
+            print(f"🔥 تسخين مسبق: {len(todo)} حلقة...")
+            done = 0
+            for ch, mid in todo:
+                if await _warm_episode(ch, mid, CHUNK_SIZE):
+                    done += 1
+                await asyncio.sleep(WARM_GAP)
+            print(f"✅ تسخين مسبق: {done} كتلة أولى جاهزة (المخزون {len(_WARM)})")
+        except Exception as e:
+            _WARM_STATS["last_error"] = f"{type(e).__name__}: {e}"
+            print(f"⚠️ حلقة التسخين: {e}")
+        await asyncio.sleep(6 * 3600)
+
+
+async def _resolve_media(ch, mid):
+    """يعيد (file_id, size, اسم القناة) من رسالة Telegram."""
+    order = [ch] if ch in CHANNELS else list(CHANNELS)
+    for name in order:
+        try:
+            m = await client.get_messages(name, mid)
+        except Exception:
+            m = None
+        media = (getattr(m, "video", None) or getattr(m, "document", None)) if m else None
+        if media:
+            return (media.file_id, int(getattr(media, "file_size", 0) or 0), name)
+    return "", 0, ch
+
+
+# ═══════════════════════════════════════════════════════════════
 # 10) Endpoint البث
 # ═══════════════════════════════════════════════════════════════
 @app.options("/stream")
@@ -583,27 +746,31 @@ async def stream(
       حتى لا يُبَث ملف قديم/عمل آخر بنفس المعرّف.
     """
     # ─── تحديد الملف: الرسالة أولًا ثم المعرّف ───
-    if mid > 0 and client is not None and getattr(client, "is_connected", False):
-        order = [ch] if ch in CHANNELS else list(CHANNELS)
-        for name in order:
-            try:
-                m = await client.get_messages(name, mid)
-            except Exception:
-                m = None
-            media = getattr(m, "video", None) or getattr(m, "document", None) if m else None
-            if media:
-                fid = media.file_id
-                size = media.file_size or size
-                break
+    # ★ الكتلة الأولى من الذاكرة إن كانت مسخّنة (توفير قراءة الرسالة + GetFile)
+    cached_first = warm_get(ch, mid, 0, CHUNK_SIZE, count=False) if mid > 0 and size > 0 else None
 
-    if not fid:
+    if (mid > 0 and (cached_first is None or not fid)
+            and client is not None and getattr(client, "is_connected", False)):
+        _fid, _size, _ch = await _resolve_media(ch, mid)
+        if _fid:
+            fid = _fid
+            size = _size or size
+            ch = _ch
+            if cached_first is None:
+                cached_first = warm_get(ch, mid, 0, CHUNK_SIZE, count=False)
+
+    if not fid and cached_first is None:
         raise HTTPException(400, "missing fid parameter")
 
-    try:
-        file_id = FileId.decode(fid)
-    except Exception as e:
-        print(f"❌ FileId.decode فشل: {e}")
-        raise HTTPException(400, f"invalid file_id: {e}")
+    file_id = None
+    if fid:
+        try:
+            file_id = FileId.decode(fid)
+        except Exception as e:
+            if cached_first is None:
+                print(f"❌ FileId.decode فشل: {e}")
+                raise HTTPException(400, f"invalid file_id: {e}")
+            print(f"⚠️ file_id غير صالح لكن أول كتلة مسخّنة: {e}")
 
     file_size = int(size)
     if file_size <= 0:
@@ -627,33 +794,56 @@ async def stream(
 
     length = end - start + 1
 
+    ftype = file_id.file_type if file_id is not None else "cached"
     print(
-        f"📥 بث: type={file_id.file_type}, size={file_size / 1024 / 1024:.1f}MB, "
-        f"range={start}-{end} ({length / 1024 / 1024:.2f}MB), mid={mid}"
+        f"📥 بث: type={ftype}, size={file_size / 1024 / 1024:.1f}MB, "
+        f"range={start}-{end} ({length / 1024 / 1024:.2f}MB), mid={mid}, "
+        f"warm={'yes' if cached_first else 'no'}"
     )
 
-    location = build_location(file_id)
+    location = build_location(file_id) if file_id is not None else None
     aligned_start = align_down(start, CHUNK_SIZE)
     skip = start - aligned_start
+
+    # ★ إن لم يكن لدينا file_id (رابط بالمعرّف فقط) نجلبه الآن قبل أي كتلة
+    if location is None:
+        _fid, _size, _ch = await _resolve_media(ch, mid)
+        if not _fid:
+            return JSONResponse(
+                status_code=503,
+                content={"error": "stream_unavailable",
+                         "message": "تعذّر جلب الفيديو من Telegram. حاول مجدداً."},
+                headers=CORS_HEADERS,
+            )
+        ch = _ch or ch
+        location = build_location(FileId.decode(_fid))
 
     # ═══════════════════════════════════════════════════════════
     # pre-fetch الكتلة الأولى قبل الترويسات
     # ═══════════════════════════════════════════════════════════
     refresh_state = {"attempts": 0}
 
-    try:
-        first_data, location, new_fid = await fetch_chunk(
-            location,
-            aligned_start,
-            CHUNK_SIZE,
-            mid,
-            fid,
-            refresh_state,
-        )
-    except Exception as e:
-        print(f"❌ pre-fetch فشل: {e}")
-        traceback.print_exc()
-        first_data = b""
+    first_data = b""
+    if aligned_start == 0 and cached_first:
+        first_data = cached_first
+        new_fid = fid
+        print(f"⚡ كتلة أولى من الذاكرة: {len(first_data)} bytes")
+    else:
+        try:
+            first_data, location, new_fid = await fetch_chunk(
+                location,
+                aligned_start,
+                CHUNK_SIZE,
+                mid,
+                fid,
+                refresh_state,
+            )
+            if aligned_start == 0:
+                warm_put(ch, mid, 0, CHUNK_SIZE, first_data)
+        except Exception as e:
+            print(f"❌ pre-fetch فشل: {e}")
+            traceback.print_exc()
+            first_data = b""
 
     if not first_data:
         print("❌ pre-fetch أعاد بيانات فارغة")
