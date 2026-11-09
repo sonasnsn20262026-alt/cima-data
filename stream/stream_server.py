@@ -1058,6 +1058,35 @@ async def admin_scan(token: str, title: str = "", limit: int = 5000):
     return res
 
 
+@app.get("/admin/message")
+async def admin_message(token: str, mid: int, ch: str = ""):
+    """بيانات رسالة واحدة في القنوات: الاسم الحقيقي للملف + الوصف + الحجم + المدة."""
+    _check_token(token)
+    if client is None or not getattr(client, "is_connected", False):
+        raise HTTPException(503, "not_connected")
+    names = [ch] if ch in CHANNELS else list(CHANNELS)
+    out = {}
+    for name in names:
+        try:
+            m = await client.get_messages(name, mid)
+        except Exception as e:
+            out[name] = {"error": str(e)[:150]}
+            continue
+        if not m or getattr(m, "empty", False):
+            out[name] = None
+            continue
+        media = getattr(m, "video", None) or getattr(m, "document", None)
+        out[name] = {
+            "caption": (getattr(m, "caption", "") or "")[:300],
+            "file_name": getattr(media, "file_name", "") if media else "",
+            "size": int(getattr(media, "file_size", 0) or 0) if media else 0,
+            "duration": int(getattr(media, "duration", 0) or 0) if media else 0,
+            "date": m.date.isoformat() if getattr(m, "date", None) else "",
+            "kind": type(media).__name__ if media else "",
+        }
+    return out
+
+
 @app.get("/admin/duplicates")
 async def admin_duplicates(token: str, limit: int = 5000):
     """يكشف التكرار بين القناتين: نفس الملف، أو نفس الاسم والحلقة."""
