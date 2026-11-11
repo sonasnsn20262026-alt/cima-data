@@ -50,13 +50,13 @@
    "slug": "ابواب-القدر-الموسم-2-1629",
    "category": "مسلسلات تركية مدبلجة",
    "poster": "https://web-production-fd654.up.railway.app/posters/tr-%D8%A7%D8%A8%D9%88%D8%A7%D8%A8-%D8%A7%D9%84%D9%82%D8%AF%D8%B1-%D8%A7%D9%84%D9%85%D9%88%D8%B3%D9%85-2.jpg",
-   "episodes_count": 2,
+   "episodes_count": 3,
    "episodes": [
     10
    ],
    "first_mid": 1629,
    "last_mid": 1629,
-   "eps": 2
+   "eps": 3
   },
   {
    "name": "اتنين غيرنا",
@@ -96,7 +96,7 @@
    "slug": "احتمال-حب-4219",
    "category": "مسلسلات تركية مدبلجة",
    "poster": "https://web-production-fd654.up.railway.app/posters/tr-%D8%A7%D8%AD%D8%AA%D9%85%D8%A7%D9%84-%D8%AD%D8%A8.jpg",
-   "episodes_count": 100,
+   "episodes_count": 101,
    "episodes": [
     1,
     2,
@@ -194,7 +194,7 @@
    ],
    "first_mid": 1155,
    "last_mid": 4219,
-   "eps": 100
+   "eps": 101
   },
   {
    "name": "اخي فوق الشجره",
@@ -355,7 +355,7 @@
    "season": 0,
    "slug": "البيت-بيتك-2-545",
    "category": "مسلسلات عربية",
-   "poster": "https://web-production-fd654.up.railway.app/posters/v2-%D8%A7%D9%84%D8%A8%D9%8A%D8%AA-%D8%A8%D9%8A%D8%AA%D9%83-2.jpg",
+   "poster": "https://web-production-fd654.up.railway.app/posters/gen_%D8%A7%D9%84%D8%A8%D9%8A%D8%AA-%D8%A8%D9%8A%D8%AA%D9%83-2-bf87aa44.jpg",
    "episodes_count": 10,
    "episodes": [
     1,
@@ -745,7 +745,7 @@
    "slug": "الحب-ورطة-1982",
    "category": "مسلسلات تركية مدبلجة",
    "poster": "https://web-production-fd654.up.railway.app/posters/tr-%D8%A7%D9%84%D8%AD%D8%A8-%D9%88%D8%B1%D8%B7%D8%A9.jpg",
-   "episodes_count": 272,
+   "episodes_count": 408,
    "episodes": [
     1,
     2,
@@ -886,7 +886,7 @@
    ],
    "first_mid": 3,
    "last_mid": 1982,
-   "eps": 272
+   "eps": 408
   },
   {
    "name": "الحقيقة والخيال",
@@ -896,14 +896,14 @@
    "slug": "الحقيقة-والخيال-1641",
    "category": "مسلسلات تركية مدبلجة",
    "poster": "https://web-production-fd654.up.railway.app/posters/orig-%D8%A7%D9%84%D8%AD%D9%82%D9%8A%D9%82%D8%A9-%D9%88%D8%A7%D9%84%D8%AE%D9%8A%D8%A7%D9%84-b4f5d201.jpg",
-   "episodes_count": 4,
+   "episodes_count": 6,
    "episodes": [
     1,
     20
    ],
    "first_mid": 1640,
    "last_mid": 1641,
-   "eps": 4
+   "eps": 6
   },
   {
    "name": "الحلانجي",
@@ -1016,7 +1016,7 @@
    "slug": "الخياط-1530",
    "category": "مسلسلات تركية مدبلجة",
    "poster": "https://web-production-fd654.up.railway.app/posters/im-%D8%A7%D9%84%D8%AE%D9%8A%D8%A7%D8%B7.jpg",
-   "episodes_count": 15,
+   "episodes_count": 23,
    "episodes": [
     1,
     2,
@@ -1028,7 +1028,7 @@
    ],
    "first_mid": 1523,
    "last_mid": 1529,
-   "eps": 15
+   "eps": 23
   },
   {
    "name": "الخياط الموسم 2",
@@ -1442,7 +1442,7 @@
    "slug": "المشردون-1727",
    "category": "مسلسلات تركية مدبلجة",
    "poster": "https://web-production-fd654.up.railway.app/posters/imdb-%D8%A7%D9%84%D9%85%D8%B4%D8%B1%D8%AF%D9%88%D9%86.jpg",
-   "episodes_count": 142,
+   "episodes_count": 238,
    "episodes": [
     1,
     3,
@@ -1452,7 +1452,7 @@
    ],
    "first_mid": 1721,
    "last_mid": 1727,
-   "eps": 142
+   "eps": 238
   },
   {
    "name": "المشردون الموسم 2",
@@ -1623,7 +1623,7 @@
    "slug": "الوريث-ولي-العهد-1795",
    "category": "مسلسلات تركية مدبلجة",
    "poster": "https://web-production-fd654.up.railway.app/posters/tr-%D8%A7%D9%84%D9%88%D8%B1%D9%8A%D8%AB---%D9%88%D9%84%D9%8A-%D8%A7%D9%84%D8%B9%D9%87%D8%AF.jpg",
-   "episodes_count": 16,
+   "episodes_count": 21,
    "episodes": [
     16,
     17,
@@ -1639,7 +1639,7 @@
    ],
    "first_mid": 1785,
    "last_mid": 1795,
-   "eps": 16
+   "eps": 21
   },
   {
    "name": "انا لحبيبي",
@@ -1959,7 +1959,7 @@
    "slug": "جودا-أكبر-1615",
    "category": "مسلسلات هندية مدبلجة",
    "poster": "https://web-production-fd654.up.railway.app/posters/imdb-%D8%AC%D9%88%D8%AF%D8%A7-%D8%A3%D9%83%D8%A8%D8%B1.jpg",
-   "episodes_count": 54,
+   "episodes_count": 68,
    "episodes": [
     1,
     3,
@@ -1988,7 +1988,7 @@
    ],
    "first_mid": 1579,
    "last_mid": 1615,
-   "eps": 54
+   "eps": 68
   },
   {
    "name": "جوما",
@@ -2068,7 +2068,7 @@
    "slug": "حب-للايجار-126",
    "category": "مسلسلات تركية مدبلجة",
    "poster": "https://web-production-fd654.up.railway.app/posters/tr-%D8%AD%D8%A8-%D9%84%D9%84%D8%A7%D9%8A%D8%AC%D8%A7%D8%B1.jpg",
-   "episodes_count": 210,
+   "episodes_count": 331,
    "episodes": [
     1,
     2,
@@ -2162,7 +2162,7 @@
    ],
    "first_mid": 38,
    "last_mid": 126,
-   "eps": 210
+   "eps": 331
   },
   {
    "name": "حب للايجار الموسم 2",
@@ -2172,7 +2172,7 @@
    "slug": "حب-للايجار-الموسم-2-247",
    "category": "مسلسلات تركية مدبلجة",
    "poster": "https://web-production-fd654.up.railway.app/posters/tr-%D8%AD%D8%A8-%D9%84%D9%84%D8%A7%D9%8A%D8%AC%D8%A7%D8%B1-%D8%A7%D9%84%D9%85%D9%88%D8%B3%D9%85-2.jpg",
-   "episodes_count": 128,
+   "episodes_count": 135,
    "episodes": [
     1,
     2,
@@ -2298,7 +2298,7 @@
    ],
    "first_mid": 127,
    "last_mid": 247,
-   "eps": 128
+   "eps": 135
   },
   {
    "name": "حد اقصى",
@@ -2383,7 +2383,7 @@
    "slug": "حياتي-الرائعة-1329",
    "category": "مسلسلات تركية مدبلجة",
    "poster": "https://web-production-fd654.up.railway.app/posters/fin-%D8%AD%D9%8A%D8%A7%D8%AA%D9%8A-%D8%A7%D9%84%D8%B1%D8%A7%D8%A6%D8%B9%D8%A9.jpg",
-   "episodes_count": 159,
+   "episodes_count": 219,
    "episodes": [
     1,
     2,
@@ -2487,7 +2487,7 @@
    ],
    "first_mid": 1231,
    "last_mid": 1329,
-   "eps": 159
+   "eps": 219
   },
   {
    "name": "خالد نور وولده نور خالد",
@@ -3497,7 +3497,7 @@
    "slug": "لعبة-الحظ-388",
    "category": "مسلسلات تركية مدبلجة",
    "poster": "https://web-production-fd654.up.railway.app/posters/orig-%D9%84%D8%B9%D8%A8%D8%A9-%D8%A7%D9%84%D8%AD%D8%B8-388.jpg",
-   "episodes_count": 116,
+   "episodes_count": 174,
    "episodes": [
     1,
     2,
@@ -3560,7 +3560,7 @@
    ],
    "first_mid": 331,
    "last_mid": 388,
-   "eps": 116
+   "eps": 174
   },
   {
    "name": "لعبة حب",
@@ -3985,7 +3985,7 @@
    "slug": "ورود-وذنوب-4282",
    "category": "مسلسلات تركية مدبلجة",
    "poster": "https://web-production-fd654.up.railway.app/posters/fin-%D9%88%D8%B1%D9%88%D8%AF-%D9%88%D8%B0%D9%86%D9%88%D8%A8.jpg",
-   "episodes_count": 116,
+   "episodes_count": 126,
    "episodes": [
     1,
     2,
@@ -4068,7 +4068,7 @@
    ],
    "first_mid": 1049,
    "last_mid": 4282,
-   "eps": 116
+   "eps": 126
   },
   {
    "name": "وش في وش",
@@ -4243,7 +4243,7 @@
    "base_name": "الوريث",
    "season": 0,
    "slug": "الوريث",
-   "poster": "https://web-production-fd654.up.railway.app/posters/gen_%D8%A7%D9%84%D9%88%D8%B1%D9%8A%D8%AB-dea130cf.jpg",
+   "poster": "https://web-production-fd654.up.railway.app/posters/orig-%D8%A7%D9%84%D9%88%D8%B1%D9%8A%D8%AB-dea130cf.jpg",
    "episodes_count": 11,
    "eps": 11,
    "genre": "",
@@ -4279,7 +4279,7 @@
    "base_name": "الصندوق",
    "season": 0,
    "slug": "الصندوق",
-   "poster": "https://web-production-fd654.up.railway.app/posters/gen_%D8%A7%D9%84%D8%B5%D9%86%D8%AF%D9%88%D9%82-c954731b.jpg",
+   "poster": "https://web-production-fd654.up.railway.app/posters/%D8%A7%D9%84%D8%B5%D9%86%D8%AF%D9%88%D9%82-c954731b.jpg",
    "episodes_count": 1,
    "eps": 1,
    "genre": "",
@@ -4333,7 +4333,7 @@
    "base_name": "الخياط Terzi الموسم الثاني",
    "season": 0,
    "slug": "الخياط-Terzi-الموسم-الثاني",
-   "poster": "https://web-production-fd654.up.railway.app/posters/gen_%D8%A7%D9%84%D8%AE%D9%8A%D8%A7%D8%B7-Terzi-%D8%A7%D9%84%D9%85%D9%88%D8%B3%D9%85-%D8%A7%D9%84%D8%AB%D8%A7%D9%86%D9%8A-7f066e23.jpg",
+   "poster": "https://web-production-fd654.up.railway.app/posters/%D8%A7%D9%84%D8%AE%D9%8A%D8%A7%D8%B7-Terzi-%D8%A7%D9%84%D9%85%D9%88%D8%B3%D9%85-%D8%A7%D9%84%D8%AB%D8%A7%D9%86%D9%8A-7f066e23.jpg",
    "episodes_count": 2,
    "eps": 2,
    "genre": "",
@@ -4387,7 +4387,7 @@
    "base_name": "العبقري",
    "season": 0,
    "slug": "العبقري",
-   "poster": "https://web-production-fd654.up.railway.app/posters/gen_%D8%A7%D9%84%D8%B9%D8%A8%D9%82%D8%B1%D9%8A-73eae2ed.jpg",
+   "poster": "https://web-production-fd654.up.railway.app/posters/orig-%D8%A7%D9%84%D8%B9%D8%A8%D9%82%D8%B1%D9%8A-73eae2ed.jpg",
    "episodes_count": 5,
    "eps": 5,
    "genre": "",
@@ -4426,6 +4426,24 @@
    "poster": "https://web-production-fd654.up.railway.app/posters/%D8%A7%D9%86%D8%AA-%D9%85%D9%86-%D8%A7%D8%AD%D8%A8%D8%A8%D8%AA-2-%D8%A7%D9%84%D9%85%D9%88%D8%B3%D9%85-%D8%A7%D9%84%D8%AB%D8%A7%D9%86%D9%8A-e7f74c3c.jpg",
    "episodes_count": 34,
    "eps": 34,
+   "genre": "",
+   "category": "",
+   "source": "telegram",
+   "source_category": "",
+   "origin": "",
+   "is_movie": false,
+   "lang": "",
+   "last_updated": "",
+   "label": ""
+  },
+  {
+   "name": "مازلت في 17",
+   "base_name": "مازلت في 17",
+   "season": 0,
+   "slug": "مازلت-في-17",
+   "poster": "https://web-production-fd654.up.railway.app/posters/%D9%85%D8%A7%D8%B2%D9%84%D8%AA-%D9%81%D9%8A-17-58f76c69.jpg",
+   "episodes_count": 2,
+   "eps": 2,
    "genre": "",
    "category": "",
    "source": "telegram",
